@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/jmoiron/sqlx"
 	"github.com/securemist/douyin-mini/model/db"
 	"github.com/securemist/douyin-mini/model/resp"
 	"github.com/securemist/douyin-mini/util"
@@ -44,7 +45,7 @@ func GetVideoList(currentUseId, userId int64) VideoList {
 	// 并发遍历作品列表，每个协程生成一个video放入管道，管道满时继续运行
 	// 这里的并发安全行亟待验证 TODO
 	for index, work := range workList {
-		go add(index, work, currentUseId, videoChan, author)
+		go add(index, work, currentUseId, Db, videoChan, author)
 	}
 
 	for {
@@ -84,9 +85,7 @@ func AddWork(userId int64, playUrl, coverUrl, title string) int64 {
 	return workId
 }
 
-func add(index int, work db.Work, currentUserId int64, videoChan chan resp.Video, author resp.User) {
-	Db := util.GetDbConnection()
-	defer Db.Close()
+func add(index int, work db.Work, currentUserId int64, Db *sqlx.DB, videoChan chan resp.Video, author resp.User) {
 
 	isFavorite := false
 	var commentCount int64

@@ -32,8 +32,9 @@ type WorkFavorite struct {
 }
 
 type WorkComment struct {
-	Id      int64  `db:"id"`
-	UserId  int64  `db:"user_id"`
-	WorkId  int64  `db:"work_id"`
-	Content string `db:"content"`
+	Id         int64  `db:"id"`
+	UserId     int64  `db:"user_id"`
+	WorkId     int64  `db:"work_id"`
+	Content    string `db:"content"`
+	CreateTime string `db:"create_time"`
 }

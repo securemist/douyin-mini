@@ -33,7 +33,7 @@ func initRouter(r *gin.Engine) {
 	apiRouter.POST("/favorite/action/", controller.FavoriteAction)
 	apiRouter.GET("/favorite/list/", controller.FavoriteList)
 	apiRouter.POST("/comment/action/", controller.CommentAction)
-	apiRouter.GET("/comment/list/", controller.CommentList)
+	apiRouter.GET("/comment/list/", controller.HandleCommentList)
 
 	// extra apis - II
 	apiRouter.POST("/relation/action/", controller.RelationAction)

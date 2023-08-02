@@ -36,7 +36,12 @@ func Feed(c *gin.Context) {
 	// 返回按投稿时间倒序的视频列表 十条视频
 	videoList := service.GetFeedVideoList(currentUserId, lastTime)
 	//本次feed最后一个视频的时间 = 下一次feed的起始时间
-	nextWorkId := videoList[len(videoList)-1].Id
+
+	var nextWorkId int64
+	if len(videoList) != 0 {
+		nextWorkId = videoList[len(videoList)-1].Id
+	}
+
 	// 查询出时间
 	nextTime := util.TimeToUnix(service.GetTimeByWorkId(nextWorkId))
 
