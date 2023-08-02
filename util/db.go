@@ -18,7 +18,8 @@ func init() {
 
 	//url=root:root@tcp(127.0.0.1:3306)/douyim
 	url = data["username"] + ":" + data["password"] + "@tcp(" + data["addr"] + ")/" +
-		"" + data["database"] + "?charset=utf8&parseTime=true&loc=Asia%2FShanghai"
+		"" + data["database"] + "?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+
 }
 
 func readProperties(file string) map[string]string {
@@ -66,6 +67,7 @@ func readProperties(file string) map[string]string {
 }
 
 func GetDbConnection() *sqlx.DB {
+
 	db, err := sqlx.Open("mysql", url)
 	if err != nil {
 		log.Fatal("database connection failed")

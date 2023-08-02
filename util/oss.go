@@ -5,15 +5,13 @@ import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"io"
 	"log"
-	"os"
 	"path/filepath"
 	"strconv"
 )
 
 func handleError(err error) {
 	if err != nil {
-		log.Fatal("oss client error:", err)
-		os.Exit(-1)
+		log.Fatal("oss client connect error:", err)
 	}
 }
 
