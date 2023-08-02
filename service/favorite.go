@@ -32,7 +32,7 @@ func GetFavoriteList(currentUserId, userId int64) VideoList {
 	// 查出目标用户所有点赞的视频
 	var workList []db.Work
 
-	err := Db.Select(&workList, "SELECT id, user_id, play_url, cover_url,title, create_time FROM user_work WHERE id in (SELECT work_id FROM user_favorite WHERE user_id = ? AND deleted = 0) AND deleted = 0", userId)
+	err := Db.Select(&workList, "SELECT id, user_id, play_url, cover_url,title, create_time FROM user_work WHERE id in (SELECT work_id FROM user_favorite WHERE user_id = ? AND deleted = 0) AND deleted = 0 ", userId)
 	HandleSqlError(err)
 
 	videoList := HandleWorkList(currentUserId, workList)

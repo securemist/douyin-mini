@@ -28,6 +28,7 @@ func FavoriteAction(c *gin.Context) {
 }
 
 // FavoriteList all users have same favorite video list
+// 这个接口尚有歧义 TODO
 func FavoriteList(c *gin.Context) {
 	id, _ := c.Get("userId")
 	currentUserId := id.(int64)
