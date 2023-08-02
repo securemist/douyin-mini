@@ -38,3 +38,11 @@ type WorkComment struct {
 	Content    string `db:"content"`
 	CreateTime string `db:"create_time"`
 }
+
+type Message struct {
+	Id         int64  `db:"id"`
+	FromUserId int64  `db:"from_user_id"`
+	ToUserId   int64  `db:"to_user_id"`
+	Content    string `db:"content"`
+	CreateTime string `db:"create_time"`
+}
