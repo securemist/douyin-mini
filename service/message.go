@@ -4,10 +4,7 @@ import (
 	"github.com/securemist/douyin-mini/model/db"
 	"github.com/securemist/douyin-mini/model/resp"
 	"github.com/securemist/douyin-mini/util"
-	"sync"
 )
-
-var chatConnMap = sync.Map{}
 
 func HandleMessageAction(userId, toUserId int64, content string) {
 	Db := util.GetDbConnection()

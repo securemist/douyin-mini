@@ -2,12 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/securemist/douyin-mini/service"
 )
 
 func main() {
-	go service.RunMessageServer()
-
 	r := gin.Default()
 
 	r.MaxMultipartMemory = 100 << 20

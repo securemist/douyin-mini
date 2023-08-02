@@ -54,7 +54,7 @@ func download() {
 
 		playUrl := util.UploadIO(constant.Video_Path, src)
 		title := "title" + strconv.FormatInt(int64(index), 10)
-		coverUrl := playUrl + "x-oss-process=video/snapshot,t_1000,f_jpg,w_800,h_600"
+		coverUrl := playUrl + "x-oss-process=video/snapshot,t_1000,f_jpg,w_720,h_1080"
 
 		_ = service.AddWork(1, playUrl, coverUrl, title)
 
