@@ -46,7 +46,7 @@ go build && ./douyin-mini.exe
 项目详细的接口文档在[这里](https://apifox.com/apidoc/shared-09d88f32-0b6c-4157-9d07-a36d32d7a75c/api-50707525)。
 
 - [x] 基础接口
-- [ ] 互动接口
+- [x] 互动接口
 - [ ] 社交接口
 
 
