@@ -20,6 +20,10 @@ func GetFeedVideoList(currentUserId int64, lastTime time.Time) VideoList {
 	HandleSqlError(err)
 	Db.Close()
 
+	if len(workList) == 0 {
+		return nil
+	}
+
 	videoList := HandleWorkList(currentUserId, workList)
 
 	// 按时间倒序排序

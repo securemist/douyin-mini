@@ -38,13 +38,20 @@ func Feed(c *gin.Context) {
 	//本次feed最后一个视频的时间 = 下一次feed的起始时间
 
 	var nextWorkId int64
-	if len(videoList) != 0 {
-		nextWorkId = videoList[len(videoList)-1].Id
+	if len(videoList) == 0 {
+		now := util.TimeToUnix(util.TimeNow())
+		c.JSON(http.StatusOK, FeedResponse{
+			Response:  constant.GENERAL_SUCCESS,
+			VideoList: &videoList,
+			NextTime:  &now,
+		})
+
 	}
+
+	nextWorkId = videoList[len(videoList)-1].Id
 
 	// 查询出时间
 	nextTime := util.TimeToUnix(service.GetTimeByWorkId(nextWorkId))
-
 	c.JSON(http.StatusOK, FeedResponse{
 		Response:  constant.GENERAL_SUCCESS,
 		VideoList: &videoList,
