@@ -4,12 +4,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/securemist/douyin-mini/controller"
 	"github.com/securemist/douyin-mini/middleware"
+	"net/http"
 )
 
 func initRouter(r *gin.Engine) {
 
 	// public directory is used to serve static resources
 	r.Static("/static", "./public")
+	r.LoadHTMLGlob("public/**")
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "说明"})
+	})
 
 	// 不需要鉴权的接口
 	registerAndLogin := r.Group("/douyin")
