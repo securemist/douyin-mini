@@ -9,9 +9,9 @@ import (
 
 func initRouter(r *gin.Engine) {
 
-	r.Static("/static", "./public")
+	r.Static("/static", "./static")
 
-	r.LoadHTMLGlob("public/**")
+	r.LoadHTMLGlob("templates/**")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "说明"})
 	})
