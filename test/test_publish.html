@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>上传文件和提交参数</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>上传文件和提交参数</h2>
+
+<form
+        action="http://127.0.0.1:8080/douyin/publish/action"
+        method="post"
+        enctype="multipart/form-data"
+>
+    <label for="title">title:</label>
+    <input type="text" id="title" name="title" />
+    <br />
+    <br />
+
+    <label for="token">token:</label>
+    <input type="text" id="token" name="token" />
+    <br />
+    <br />
+
+    <label for="file">选择文件:</label>
+    <input type="file" id="file" name="file" />
+    <br />
+    <br />
+
+    <input type="submit" value="提交" />
+</form>
+</body>
+</html>
