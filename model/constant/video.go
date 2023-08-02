@@ -1,3 +1,5 @@
 package constant
 
-const FEED_VIDEO_LIST_SIZE = 10
+import "github.com/securemist/douyin-mini/util"
+
+var DEFAULT_FEED_LIST_SIZE = util.GetConf("default_feed_list_size")

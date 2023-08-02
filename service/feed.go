@@ -16,7 +16,7 @@ func GetFeedVideoList(currentUserId int64, lastTime time.Time) VideoList {
 	// 查出 1. 排除自己的 2. 在给定时间之前的 3.按时间倒序的(放在切片中排序) 十条视频
 	var workList []db.Work
 
-	err := Db.Select(&workList, "SELECT id, user_id, play_url, cover_url,title, create_time FROM user_work WHERE user_id != ? AND deleted = 0 AND create_time < ? ORDER BY create_time DESC LIMIT 0, ?", currentUserId, util.TimeFormat(lastTime), constant.FEED_VIDEO_LIST_SIZE)
+	err := Db.Select(&workList, "SELECT id, user_id, play_url, cover_url,title, create_time FROM user_work WHERE user_id != ? AND deleted = 0 AND create_time < ? ORDER BY create_time DESC LIMIT 0, ?", currentUserId, util.TimeFormat(lastTime), constant.DEFAULT_FEED_LIST_SIZE)
 	HandleSqlError(err)
 	Db.Close()
 
