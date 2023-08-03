@@ -18,6 +18,9 @@
 # vendor/
 *.properties
 
+*.mp4
+*.jpg
 
 # Go workspace file
 .idea
+test

@@ -11,7 +11,7 @@
  Target Server Version : 50740
  File Encoding         : 65001
 
- Date: 02/08/2023 15:32:35
+ Date: 03/08/2023 14:11:37
 */
 
 SET NAMES utf8mb4;
@@ -33,6 +33,15 @@ CREATE TABLE `sys_user`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES (1, 'tom', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/avatar/1.png', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/bg/bg1.jpg', 'default', 'tom', '123456');
+INSERT INTO `sys_user` VALUES (2, 'jack', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/avatar/1.png', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/bg/bg1.jpg', 'default', 'jack', '123456');
+INSERT INTO `sys_user` VALUES (3, 'jerry', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/avatar/1.png', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/bg/bg1.jpg', 'default', 'jerry', '123456');
+INSERT INTO `sys_user` VALUES (4, 'linda', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/avatar/1.png', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/bg/bg1.jpg', 'default', 'linda', '123456');
+INSERT INTO `sys_user` VALUES (10, 'jim', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/avatar/1.png', 'https://douyin1562.oss-cn-beijing.aliyuncs.com/bg/bg1.jpg', 'aa', 'jim', '123456');
+
+-- ----------------------------
 -- Table structure for user_favorite
 -- ----------------------------
 DROP TABLE IF EXISTS `user_favorite`;
@@ -43,7 +52,25 @@ CREATE TABLE `user_favorite`  (
   `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `deleted` int(11) NOT NULL DEFAULT 0 COMMENT '记录是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of user_favorite
+-- ----------------------------
+INSERT INTO `user_favorite` VALUES (1, 9, 2, '2023-08-02 11:42:27', 0);
+INSERT INTO `user_favorite` VALUES (2, 7, 3, '2023-08-01 07:43:49', 0);
+INSERT INTO `user_favorite` VALUES (3, 7, 4, '2023-08-01 07:43:51', 0);
+INSERT INTO `user_favorite` VALUES (4, 9, 4, '2023-08-01 07:45:04', 0);
+INSERT INTO `user_favorite` VALUES (5, 8, 2, '2023-08-02 14:34:59', 0);
+INSERT INTO `user_favorite` VALUES (6, 55, 2, '2023-08-02 15:09:09', 1);
+INSERT INTO `user_favorite` VALUES (7, 54, 2, '2023-08-02 15:09:11', 1);
+INSERT INTO `user_favorite` VALUES (8, 52, 2, '2023-08-02 15:31:44', 0);
+INSERT INTO `user_favorite` VALUES (9, 49, 2, '2023-08-02 15:09:03', 1);
+INSERT INTO `user_favorite` VALUES (10, 21, 2, '2023-08-02 17:43:29', 1);
+INSERT INTO `user_favorite` VALUES (11, 54, 1, '2023-08-02 19:39:51', 0);
+INSERT INTO `user_favorite` VALUES (12, 21, 10, '2023-08-02 21:06:56', 1);
+INSERT INTO `user_favorite` VALUES (13, 55, 10, '2023-08-02 21:07:01', 0);
+INSERT INTO `user_favorite` VALUES (14, 54, 10, '2023-08-02 21:07:02', 0);
 
 -- ----------------------------
 -- Table structure for user_follow
@@ -56,7 +83,41 @@ CREATE TABLE `user_follow`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '关注时间',
   `deleted` int(11) NOT NULL DEFAULT 0 COMMENT '是否取关(删除记录)\r\n0 表示正常记录\r\n1 表示已取关',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of user_follow
+-- ----------------------------
+INSERT INTO `user_follow` VALUES (1, 1, 2, '2023-07-30 15:11:18', 0);
+INSERT INTO `user_follow` VALUES (2, 1, 3, '2023-07-30 15:11:31', 0);
+INSERT INTO `user_follow` VALUES (3, 1, 4, '2023-07-30 19:13:22', 0);
+INSERT INTO `user_follow` VALUES (4, 2, 4, '2023-07-30 19:13:32', 0);
+INSERT INTO `user_follow` VALUES (5, 4, 2, '2023-07-30 19:13:32', 0);
+INSERT INTO `user_follow` VALUES (6, 3, 2, '2023-08-02 16:37:08', 0);
+INSERT INTO `user_follow` VALUES (8, 1, 10, '2023-08-02 21:06:50', 0);
+
+-- ----------------------------
+-- Table structure for user_message
+-- ----------------------------
+DROP TABLE IF EXISTS `user_message`;
+CREATE TABLE `user_message`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `from_user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '发送者',
+  `to_user_id` bigint(20) NOT NULL DEFAULT 0 COMMENT '接收者',
+  `content` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '消息内容',
+  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '发送时间',
+  `deleted` int(11) NULL DEFAULT 0 COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_message
+-- ----------------------------
+INSERT INTO `user_message` VALUES (1, 2, 1, '你好牛逼啊', '2023-08-04 16:55:58', 0);
+INSERT INTO `user_message` VALUES (2, 1, 2, '你也是', '2023-08-02 16:56:14', 0);
+INSERT INTO `user_message` VALUES (3, 2, 1, '卧槽', '2023-08-02 17:40:50', 0);
+INSERT INTO `user_message` VALUES (4, 2, 4, '在么', '2023-08-02 19:13:56', 0);
+INSERT INTO `user_message` VALUES (5, 2, 4, '你好啊', '2023-08-02 19:35:14', 0);
 
 -- ----------------------------
 -- Table structure for user_work
@@ -71,7 +132,7 @@ CREATE TABLE `user_work`  (
   `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '发布时间',
   `deleted` int(11) NOT NULL DEFAULT 0 COMMENT '0正常显示\r\n1表示已删除该作品',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for work_comment
@@ -85,6 +146,18 @@ CREATE TABLE `work_comment`  (
   `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `deleted` int(11) NOT NULL DEFAULT 0 COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of work_comment
+-- ----------------------------
+INSERT INTO `work_comment` VALUES (1, 9, 3, '挺好的呀', '2023-08-01 07:45:15', 0);
+INSERT INTO `work_comment` VALUES (4, 9, 4, '确实很好', '2023-08-02 14:19:03', 0);
+INSERT INTO `work_comment` VALUES (5, 7, 2, '真不戳呢！', '2023-08-02 14:16:18', 0);
+INSERT INTO `work_comment` VALUES (8, 54, 2, '真没呀', '2023-08-02 14:28:34', 1);
+INSERT INTO `work_comment` VALUES (9, 54, 2, '来吧', '2023-08-02 14:28:44', 0);
+INSERT INTO `work_comment` VALUES (10, 52, 2, '在么啊', '2023-08-02 15:31:44', 0);
+INSERT INTO `work_comment` VALUES (11, 54, 1, '挺好的', '2023-08-02 19:39:51', 0);
+INSERT INTO `work_comment` VALUES (12, 21, 10, '哈哈', '2023-08-02 21:06:56', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -21,7 +21,7 @@ type VideoPublishResponse struct {
 	resp.Response
 }
 
-// 视频发布接口
+// 视频发布接口，这个接口前端app有问题，这里没有问题
 func Publish(c *gin.Context) {
 	// 这里使用postman测试会出问题，接收不到文件，所以我采用html表单进行测试
 	id, _ := c.Get("userId")
@@ -39,7 +39,7 @@ func Publish(c *gin.Context) {
 
 	// 处理接收到的文件，这里使用 oss 对象存储
 	// 上传之后的文件URL
-	playUrl := util.Upload(constant.Video_Path, file.Filename, src)
+	playUrl := util.Upload("video/", file.Filename, src)
 
 	if playUrl == "" {
 		c.JSON(http.StatusOK, VideoPublishResponse{
@@ -48,7 +48,7 @@ func Publish(c *gin.Context) {
 	}
 
 	// 阿里云视频截帧，见 https://help.aliyun.com/zh/oss/user-guide/video-snapshots
-	coverUrl := playUrl + "x-oss-process=video/snapshot,t_1000,f_jpg,w_800,h_600"
+	coverUrl := playUrl + constant.COVER_SUFFIX
 
 	// 将记录添加进数据库
 	_ = service.AddWork(userId, playUrl, coverUrl, title)

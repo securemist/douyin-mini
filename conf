@@ -1,1 +1,17 @@
+# 端口
+port=8080
+
+# 视频流单次视频数量
 default_feed_list_size=25
+
+# mysql
+addr=127.0.0.1
+username=root
+password=root
+database=douyin2
+
+# oss配置
+endpoint=
+acessKeyId=
+accessKeySecret=
+bucketName=
