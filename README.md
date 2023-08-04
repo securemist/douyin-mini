@@ -16,7 +16,7 @@
 2. 运行SQL文件`doc/douyin.sql`。
 
 
-3. 生成测试数据(大约20-30s)
+3. 在`static`目录下创建`video`和`cover`两个文件夹，运行以下命令生成测试数据(大约20-30s)
 
 ```shell
 go build -o ./gen ./generate/generate.go
