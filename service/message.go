@@ -1,73 +1,40 @@
 package service
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/securemist/douyin-mini/model/db"
 	"github.com/securemist/douyin-mini/model/resp"
-	"io"
-	"net"
-	"sync"
+	"github.com/securemist/douyin-mini/util"
 )
 
-var chatConnMap = sync.Map{}
+func HandleMessageAction(userId, toUserId int64, content string) {
+	Db := util.GetDbConnection()
+	defer Db.Close()
 
-func RunMessageServer() {
-	listen, err := net.Listen("tcp", "127.0.0.1:9090")
-	if err != nil {
-		fmt.Printf("Run message sever failed: %v\n", err)
-		return
-	}
-
-	for {
-		conn, err := listen.Accept()
-		if err != nil {
-			fmt.Printf("Accept conn failed: %v\n", err)
-			continue
-		}
-
-		go process(conn)
-	}
+	_, err := Db.Exec("INSERT INTO user_message VALUES (?, ?, ?, ?, ?, ?)",
+		int64(0), userId, toUserId, content, util.TimeNow(), 0)
+	HandleSqlError(err)
 }
 
-func process(conn net.Conn) {
-	defer conn.Close()
+// 这个接口有问题，前端每s都会发一次请求，直接鬼畜
+func GetMessageChat(fromUserId, toUserId int64) []resp.Message {
+	Db := util.GetDbConnection()
+	defer Db.Close()
 
-	var buf [256]byte
-	for {
-		n, err := conn.Read(buf[:])
-		if n == 0 {
-			if err == io.EOF {
-				break
-			}
-			fmt.Printf("Read message failed: %v\n", err)
-			continue
-		}
+	var list []db.Message
+	err := Db.Select(&list, "SELECT id, from_user_id, to_user_id, content, create_time FROM user_message  WHERE id in (SELECT id FROM user_message WHERE from_user_id = ? AND to_user_id = ? AND deleted = 0 UNION SELECT id FROM user_message WHERE from_user_id = ? AND to_user_id = ? AND deleted = 0) ORDER BY create_time DESC", fromUserId, toUserId, toUserId, fromUserId)
+	HandleSqlError(err)
 
-		var event = resp.MessageSendEvent{}
-		_ = json.Unmarshal(buf[:n], &event)
-		fmt.Printf("Receive Message：%+v\n", event)
-
-		fromChatKey := fmt.Sprintf("%d_%d", event.UserId, event.ToUserId)
-		if len(event.MsgContent) == 0 {
-			chatConnMap.Store(fromChatKey, conn)
-			continue
+	var messageList []resp.Message
+	for _, message0 := range list {
+		message := resp.Message{
+			message0.Id,
+			message0.FromUserId,
+			message0.ToUserId,
+			message0.Content,
+			util.TimeStringToUnix(message0.CreateTime),
+			//util.TimeFormat(util.UnixToTime(util.TimeStringToUnix(message0.CreateTime))),
 		}
-
-		toChatKey := fmt.Sprintf("%d_%d", event.ToUserId, event.UserId)
-		writeConn, exist := chatConnMap.Load(toChatKey)
-		if !exist {
-			fmt.Printf("User %d offline\n", event.ToUserId)
-			continue
-		}
-
-		pushEvent := resp.MessagePushEvent{
-			FromUserId: event.UserId,
-			MsgContent: event.MsgContent,
-		}
-		pushData, _ := json.Marshal(pushEvent)
-		_, err = writeConn.(net.Conn).Write(pushData)
-		if err != nil {
-			fmt.Printf("Push message failed: %v\n", err)
-		}
+		messageList = append(messageList, message)
 	}
+	return messageList
 }

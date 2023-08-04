@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+var node *Worker
+
+func GenerateId() int64 {
+	node, _ = newWorker(1)
+	return node.getId()
+}
+
 const (
 	workerBits  uint8 = 10
 	numberBits  uint8 = 12
@@ -52,11 +59,4 @@ func (w *Worker) getId() int64 {
 	}
 	ID := int64((now-startTime)<<timeShift | (w.workerId << workerShift) | (w.number))
 	return ID
-}
-
-var node *Worker
-
-func GenerateId() int64 {
-	node, _ = newWorker(1)
-	return node.getId()
 }

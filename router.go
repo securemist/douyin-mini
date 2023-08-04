@@ -9,9 +9,9 @@ import (
 
 func initRouter(r *gin.Engine) {
 
-	// public directory is used to serve static resources
-	r.Static("/static", "./public")
-	r.LoadHTMLGlob("public/**")
+	r.Static("/static", "./static")
+
+	r.LoadHTMLGlob("templates/**")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "说明"})
 	})
@@ -23,19 +23,19 @@ func initRouter(r *gin.Engine) {
 
 	apiRouter := r.Group("/douyin")
 	apiRouter.Use(middleware.JWT())
-	// basic apis
+	// 基础接口
 	apiRouter.GET("/feed/", controller.Feed)
 	apiRouter.GET("/user/", controller.UserInfo)
 	apiRouter.POST("/publish/action/", controller.Publish)
 	apiRouter.GET("/publish/list/", controller.PublishList)
 
-	// extra apis - I
+	// 互动接口
 	apiRouter.POST("/favorite/action/", controller.FavoriteAction)
 	apiRouter.GET("/favorite/list/", controller.FavoriteList)
 	apiRouter.POST("/comment/action/", controller.CommentAction)
 	apiRouter.GET("/comment/list/", controller.HandleCommentList)
 
-	// extra apis - II
+	// 社交接口
 	apiRouter.POST("/relation/action/", controller.RelationAction)
 	apiRouter.GET("/relation/follow/list/", controller.FollowList)
 	apiRouter.GET("/relation/follower/list/", controller.FollowerList)

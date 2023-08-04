@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/securemist/douyin-mini/model/constant"
 	"github.com/securemist/douyin-mini/model/resp"
@@ -21,7 +20,7 @@ type VideoPublishResponse struct {
 	resp.Response
 }
 
-// 视频发布接口
+// 视频发布接口，这个接口前端app有问题，这里没有问题
 func Publish(c *gin.Context) {
 	// 这里使用postman测试会出问题，接收不到文件，所以我采用html表单进行测试
 	id, _ := c.Get("userId")
@@ -31,27 +30,36 @@ func Publish(c *gin.Context) {
 	file, err := c.FormFile("file")
 
 	if err != nil {
-		fmt.Println("file is nil ", err)
-		return
-	}
-
-	src, _ := file.Open()
-
-	// 处理接收到的文件，这里使用 oss 对象存储
-	// 上传之后的文件URL
-	playUrl := util.Upload(constant.Video_Path, file.Filename, src)
-
-	if playUrl == "" {
 		c.JSON(http.StatusOK, VideoPublishResponse{
 			Response: constant.FILE_UPLOAD_FAILED,
 		})
 	}
 
-	// 阿里云视频截帧，见 https://help.aliyun.com/zh/oss/user-guide/video-snapshots
-	coverUrl := playUrl + "x-oss-process=video/snapshot,t_1000,f_jpg,w_800,h_600"
+	src, _ := file.Open()
+
+	// 处理接收到的文件，这里放在到本地
+	// 文件名为雪花id
+	vid := util.GenerateId()
+	playUrl := "./static/video/" + strconv.FormatInt(vid, 10) + ".mp4"
+	// 由于前端app设计的缺陷，封面url没有必要取做，这里新发布的视频就同一使用默认的封面
+	coverUrl := "./static/bg/default.jpg"
+
+	err = util.Upload(playUrl, src)
+	if err != nil {
+		c.JSON(http.StatusOK, VideoPublishResponse{
+			Response: constant.FILE_UPLOAD_FAILED,
+		})
+	}
 
 	// 将记录添加进数据库
-	_ = service.AddWork(userId, playUrl, coverUrl, title)
+	_, err = service.AddWork(userId, playUrl, coverUrl, title)
+
+	if err != nil {
+		c.JSON(http.StatusOK, VideoPublishResponse{
+			Response: constant.FILE_UPLOAD_FAILED,
+		})
+	}
+
 	c.JSON(http.StatusOK, VideoPublishResponse{
 		Response: constant.FILE_UPLOAD_SUCCESS,
 	})
