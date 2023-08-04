@@ -103,7 +103,7 @@ func add0(Db *sqlx.DB, work db.Work, videoChan chan resp.Video, currentUserId in
 	video := resp.Video{
 		Id:            work.Id,
 		Author:        author,
-		CoverUrl:      conf.Project_url_suffix + work.PlayUrl,
+		CoverUrl:      conf.Project_url_suffix + work.CoverUrl,
 		PlayUrl:       conf.Project_url_suffix + work.PlayUrl,
 		Title:         work.Title,
 		FavoriteCount: favoriteCount,

@@ -11,7 +11,7 @@ var Port = "8080"
 var ip = "127.0.0.1"
 
 // 静态资源的url前缀，加载数据库url字段前面返回给前端就可以了
-var Project_url_suffix = "http://" + ip + ":" + Port
+var Project_url_suffix string
 
 // 视频流单词请求返回视频数
 var Default_feed_list_size = 25
@@ -52,6 +52,7 @@ func core() {
 	if conf["ip"] != "" {
 		ip = conf["ip"]
 	}
+	Project_url_suffix = "http://" + ip + ":" + Port
 
 }
 

@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"sync"
 )
 
 func main() {
@@ -25,10 +24,21 @@ func generate() {
 
 	defer open.Close()
 
+	// 统计行数 暂时不使用
+	scanner := bufio.NewScanner(open)
+	lineCount := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line != "" {
+			lineCount++
+		}
+	}
+
+	// 读取文件内容
+	_, _ = open.Seek(0, 0)
 	content := bufio.NewReader(open)
 
 	fmt.Println("首次运行会生成测试数据，请耐心等待......")
-	task := sync.WaitGroup{}
 
 	for {
 		line, _, err := content.ReadLine()
@@ -38,59 +48,52 @@ func generate() {
 			}
 			return
 		}
-		task.Add(1)
 
 		// 这是一个视频的url
 		url := string(line)
 		videoPath := "./static/video/"
 		coverPath := "./static/cover/"
 
-		go func(url string) {
-			// 文件名策略 同一个作品的视频和方面采用同一个雪花id
+		// 文件名策略 同一个作品的视频和方面采用同一个雪花id
+		id := util.GenerateId()
 
-			id := util.GenerateId()
+		videoFileName := videoPath + strconv.FormatInt(id, 10) + ".mp4"
+		coverFileName := coverPath + strconv.FormatInt(id, 10) + ".jpg"
 
-			videoFileName := videoPath + strconv.FormatInt(id, 10) + ".mp4"
-			coverFileName := coverPath + strconv.FormatInt(id, 10) + ".jpg"
+		// 下载视频
+		resp, err := http.Get(url)
+		handleError(err)
+		videoFile, err := os.Create(videoFileName)
+		defer videoFile.Close()
+		handleError(err)
+		_, err = io.Copy(videoFile, resp.Body)
+		handleError(err)
 
-			// 下载视频
-			resp, err := http.Get(url)
-			handleError(err)
-			videoFile, err := os.Create(videoFileName)
-			defer videoFile.Close()
-			handleError(err)
-			_, err = io.Copy(videoFile, resp.Body)
-			handleError(err)
+		// 下载封面  视频截帧
+		url += constant.COVER_SUFFIX
+		resp, err = http.Get(url)
+		handleError(err)
+		coverFile, err := os.Create(coverFileName)
+		defer coverFile.Close()
+		handleError(err)
+		_, err = io.Copy(coverFile, resp.Body)
+		handleError(err)
 
-			// 下载封面  视频截帧
-			url += constant.COVER_SUFFIX
-			resp, err = http.Get(url)
-			handleError(err)
-			coverFile, err := os.Create(coverFileName)
-			defer coverFile.Close()
-			handleError(err)
-			_, err = io.Copy(coverFile, resp.Body)
-			handleError(err)
+		// 添加记录数据库
+		playUrl := videoFileName[1:]
+		coverUrl := coverFileName[1:]
+		title := "douyin-mini by securemist"
 
-			// 添加记录数据库
-			playUrl := videoFileName[1:]
-			coverUrl := coverFileName[1:]
-			title := "douyin-mini by securemist"
+		Db := util.GetDbConnection()
+		defer Db.Close()
 
-			Db := util.GetDbConnection()
-			defer Db.Close()
+		r, err := Db.Exec("INSERT INTO user_work (user_id, play_url, cover_url,title,  create_time) VALUES ( ?, ?, ?, ?, ?)", int64(rand.Intn(5)+1), playUrl, coverUrl, title, util.TimeNow())
+		handleError(err)
+		_, err = r.LastInsertId()
+		handleError(err)
 
-			r, err := Db.Exec("INSERT INTO user_work (user_id, play_url, cover_url,title,  create_time) VALUES ( ?, ?, ?, ?, ?)", int64(rand.Intn(5)+1), playUrl, coverUrl, title, util.TimeNow())
-			handleError(err)
-			_, err = r.LastInsertId()
-			handleError(err)
-
-			fmt.Print("==")
-			task.Done()
-		}(url)
+		fmt.Print("==")
 	}
-
-	task.Wait()
 
 	fmt.Print("\n")
 	fmt.Println("data generate success")
