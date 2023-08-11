@@ -12,7 +12,7 @@ require github.com/jmoiron/sqlx v1.3.5 // indirect
 
 require (
 	github.com/ajg/form v1.5.1 // indirect
-	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible // indirect
+	github.com/aliyun/aliyun-oss-go-sdk v2.2.8+incompatible // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect

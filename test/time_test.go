@@ -1,12 +1,16 @@
 package test
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 )
 
 func Test_time(t *testing.T) {
-
+	list1 := []int64{1, 2, 5, 7, 7}
+	list2 := []int64{7, 5, 9, 2, 1, 2, 5, 7}
+	list := findIntersection(list1, list2)
+	fmt.Println(list)
 }
 
 func findIntersection(list1, list2 []int64) []int64 {

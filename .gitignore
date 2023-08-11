@@ -18,8 +18,8 @@
 # vendor/
 *.properties
 
-static/video/*.mp4
-static/cover/*.jpg
+*.mp4
+*.jpg
 
 # Go workspace file
 .idea

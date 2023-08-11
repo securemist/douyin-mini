@@ -2,7 +2,6 @@ package service
 
 import (
 	"github.com/jmoiron/sqlx"
-	conf "github.com/securemist/douyin-mini/config"
 	"github.com/securemist/douyin-mini/model/constant"
 	"github.com/securemist/douyin-mini/model/db"
 	"github.com/securemist/douyin-mini/model/resp"
@@ -103,8 +102,8 @@ func add0(Db *sqlx.DB, work db.Work, videoChan chan resp.Video, currentUserId in
 	video := resp.Video{
 		Id:            work.Id,
 		Author:        author,
-		CoverUrl:      conf.Project_url_suffix + work.CoverUrl,
-		PlayUrl:       conf.Project_url_suffix + work.PlayUrl,
+		CoverUrl:      work.CoverUrl,
+		PlayUrl:       work.PlayUrl,
 		Title:         work.Title,
 		FavoriteCount: favoriteCount,
 		IsFavorite:    isFavorite,

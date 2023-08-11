@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	conf "github.com/securemist/douyin-mini/config"
 	"github.com/securemist/douyin-mini/model/db"
 	"github.com/securemist/douyin-mini/model/resp"
 	"github.com/securemist/douyin-mini/util"
@@ -98,8 +97,8 @@ func GetUserInfo(currentUserId int64, userId int64) resp.User {
 	user0 := resp.User{
 		Id:              user.Id,
 		Name:            user.Name,
-		Avatar:          conf.Project_url_suffix + user.Avatar,
-		BackgroundImage: conf.Project_url_suffix + user.BackgroundImage,
+		Avatar:          user.Avatar,
+		BackgroundImage: user.BackgroundImage,
 		Signature:       user.Signature,
 
 		IsFollow:       isFollow,

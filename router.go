@@ -9,7 +9,7 @@ import (
 
 func initRouter(r *gin.Engine) {
 
-	r.Static("/static", "./static")
+	r.Static("/static", "./public")
 
 	r.LoadHTMLGlob("templates/**")
 	r.GET("/", func(c *gin.Context) {

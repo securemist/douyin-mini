@@ -4,31 +4,31 @@
 
 本项目为第六届字节跳动青训营大项目，点击查看[详情](https://bytedance.feishu.cn/docx/BhEgdmoI3ozdBJxly71cd30vnRc)。
 
-该分支为本地存储版，所有视频资源使用本地存储，经过部署测试，这种方式视频资源下载极慢，依赖于网络带宽，平均一个视频加载5s。
 
-想要有项目良好的体验效果，请切换到 `douyin_oss` 分支，使用oss存储可以极大提升视频加载速度。
-
+注意：本项目为oss版本，需要你开通阿里云oss对象存储才能运行起来。
 ### 启动方式
 
-1. 在`conf`编辑配置文件，如果用服务器部署务必标明ip。
+1. 在`conf`编辑你的mysql配置和oss配置。
 
 
 2. 运行SQL文件`doc/douyin.sql`。
 
 
-3. 在`static`目录下创建`video`和`cover`两个文件夹，运行以下命令生成测试数据(大约20-30s)
+3. 运行`generate/generate.go` 生成测试数据。
+
 
 ```shell
-go build -o ./gen ./generate/generate.go
+go build -0 gen ./generate/generate.go
 ./gen
 ```
 
 4. 启动项目
+
+
 ```shell
 go build 
 ./douyin-mini
 ```
-
 
 ### 开发进度
 

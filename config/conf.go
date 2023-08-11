@@ -1,6 +1,7 @@
-package config
+package conf
 
 import (
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
@@ -11,13 +12,20 @@ var Port = "8080"
 var ip = "127.0.0.1"
 
 // 静态资源的url前缀，加载数据库url字段前面返回给前端就可以了
-var Project_url_suffix string
+var Project_url_suffix = "http://" + ip + ":" + Port
 
 // 视频流单词请求返回视频数
 var Default_feed_list_size = 25
-
-// 数据库url
 var Db_url = ""
+
+var endpoint string
+var acessKeyId string
+var accessKeySecret string
+var bucketName string
+
+// 这里的oss连接全局共用一个，不知道会不会有问题 TODO
+var Bucket *oss.Bucket
+var Oss_url_Suffix string
 
 var conf = make(map[string]string, 100)
 
@@ -48,17 +56,11 @@ func core() {
 	if conf["default_feed_list_size"] != "" {
 		Default_feed_list_size, _ = strconv.Atoi(conf["default_feed_list_size"])
 	}
-
-	if conf["ip"] != "" {
-		ip = conf["ip"]
-	}
-	Project_url_suffix = "http://" + ip + ":" + Port
-
 }
 
 func mysql() {
 
-	//url=root:root@tcp(127.0.0.1:3306)/douyim
+	//url=root:root@tcp(127.0.0.1:3306)/douyin
 	Db_url = conf["username"] + ":" + conf["password"] + "@tcp(" + conf["addr"] + ")/" +
 		"" + conf["database"] + "?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
 
