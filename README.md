@@ -18,8 +18,8 @@
 
 
 ```shell
-go build ./generate/generate.go
-./generate.exe
+go build -o gen ./generate/generate.go
+./gen
 ```
 
 4. 启动项目
@@ -27,7 +27,7 @@ go build ./generate/generate.go
 
 ```shell
 go build 
-./douyin-mini.exe
+./douyin-mini
 ```
 
 ### 开发进度

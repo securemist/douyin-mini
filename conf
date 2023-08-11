@@ -11,7 +11,7 @@ password=root
 database=douyin2
 
 # oss配置
-endpoint=
+edinEndpoint=
 acessKeyId=
 accessKeySecret=
 bucketName=
