@@ -2,12 +2,16 @@ package service
 
 import (
 	"github.com/jmoiron/sqlx"
+	conf "github.com/securemist/douyin-mini/config"
 	"github.com/securemist/douyin-mini/model/db"
 	"github.com/securemist/douyin-mini/model/resp"
 	"github.com/securemist/douyin-mini/util"
 	"log"
 	"sort"
 )
+
+type Service struct {
+}
 
 type VideoList []resp.Video
 
@@ -66,23 +70,25 @@ func GetVideoList(currentUseId, userId int64) VideoList {
 	return videoList
 }
 
-// AddWork
-//
-//	@Description:  用户发布作品
-//	@param userId 用户id
-//	@param playUrl 视频url
-//	@param coverUrl 封面url
-//	@return int64 添加记录之后生成的作品id
-func AddWork(userId int64, playUrl, coverUrl, title string) int64 {
+// @Description:  用户发布作品
+// @param userId 用户id
+// @param playUrl 视频url
+// @param coverUrl 封面url
+// @return int64 添加记录之后生成的作品id
+func AddWork(userId int64, playUrl, coverUrl, title string) (int64, error) {
 	Db := util.GetDbConnection()
 	defer Db.Close()
 
-	r, err := Db.Exec("INSERT INTO user_work (user_id, play_url, cover_url,title,  create_time) VALUES (?, ?, ?, ?, ?)", userId, playUrl, coverUrl, title, util.TimeNow())
-	HandleSqlError(err)
+	r, err := Db.Exec("INSERT INTO user_work (user_id, play_url, cover_url,title,  create_time) VALUES ( ?, ?, ?, ?, ?)", userId, playUrl, coverUrl, title, util.TimeNow())
+	if err != nil {
+		return 0, err
+	}
 
 	workId, err := r.LastInsertId()
-	HandleSqlError(err)
-	return workId
+	if err != nil {
+		return 0, err
+	}
+	return workId, nil
 }
 
 func add(index int, work db.Work, currentUserId int64, Db *sqlx.DB, videoChan chan resp.Video, author resp.User) {
@@ -103,8 +109,8 @@ func add(index int, work db.Work, currentUserId int64, Db *sqlx.DB, videoChan ch
 	video := resp.Video{
 		Id:            work.Id,
 		Author:        author,
-		CoverUrl:      work.CoverUrl,
-		PlayUrl:       work.PlayUrl,
+		CoverUrl:      conf.Project_url_suffix + work.CoverUrl,
+		PlayUrl:       conf.Project_url_suffix + work.PlayUrl,
 		Title:         work.Title,
 		FavoriteCount: favoriteCount,
 		IsFavorite:    isFavorite,

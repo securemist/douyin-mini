@@ -1,4 +1,5 @@
-# 端口
+# ip + 端口
+ip=127.0.0.1
 port=8080
 
 # 视频流单次视频数量
@@ -8,6 +9,7 @@ default_feed_list_size=25
 addr=127.0.0.1
 username=root
 password=root
+
 database=douyin2
 
 # oss配置
@@ -15,3 +17,6 @@ edinEndpoint=
 acessKeyId=
 accessKeySecret=
 bucketName=
+
+database=douyin
+

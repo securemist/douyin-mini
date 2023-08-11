@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	conf "github.com/securemist/douyin-mini/config"
-	"strconv"
 )
 
 func main() {
@@ -12,5 +11,5 @@ func main() {
 	r.MaxMultipartMemory = 100 << 20
 	initRouter(r)
 
-	r.Run(":" + strconv.Itoa(conf.Port))
+	r.Run(":" + conf.Port)
 }

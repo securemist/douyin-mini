@@ -17,7 +17,6 @@ type FeedResponse struct {
 	NextTime  *int64             `json:"next_time,omitempty"`
 }
 
-// Feed same demo video list for every request
 func Feed(c *gin.Context) {
 	// 得到userId
 	id, _ := c.Get("userId")
