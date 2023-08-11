@@ -9,4 +9,14 @@ default_feed_list_size=25
 addr=127.0.0.1
 username=root
 password=root
+
+database=douyin2
+
+# oss配置
+edinEndpoint=
+acessKeyId=
+accessKeySecret=
+bucketName=
+
 database=douyin
+
